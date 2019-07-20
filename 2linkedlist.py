@@ -110,12 +110,58 @@ def intersection(ll1, ll2):
     assert(ll1.root is not None and ll2.root is not None)
     curr1 = ll1.root
     curr2 = ll2.root
-    k=0
-    while curr1 is not None or curr2 is not None:
-        if curr1 is None or curr2 is None:
-            k += 1
-        
+    l1 = 1
+    l2 = 1
+    while curr1.next is not None:
+        l1 += 1
+        curr1 = curr1.next
+    
+    while curr2.next is not None:
+        l2 += 1
+        curr2 = curr2.next
 
+    #No intersection if last node is not same
+    if not curr1 == curr2:
+        return 0
+    
+    if l1 > l2:
+        k = l1 - l2
+        longer = ll1.root
+        shorter = ll2.root
+    else:
+        k = l2 - l1
+        longer = ll2.root
+        shorter = ll1.root
+        
+    while k > 0:
+        longer = longer.next
+        k = k-1
+    
+    i=0
+    while longer != shorter and shorter is not None:
+        longer = longer.next
+        shorter = shorter.next
+        i += 1
+        
+    return i+1
+    
+        
+def joinLinkedList(ll1, ll2, k):
+    #Joins end of ll1 to ll2 at k position
+    joined = LinkedList(*ll1.traverse())
+    end1 = joined.root
+    while end1.next is not None:
+        end1 = end1.next
+    
+    i = 1
+    i_pt = ll2.root
+    while i != k:
+        i += 1
+        i_pt = i_pt.next
+    
+    end1.next = i_pt
+    return joined
+        
 
 def testLinkedList():
     ll = LinkedList(1)  
@@ -159,5 +205,15 @@ def testLinkedList():
     assert(checkPalindrome(ll2)==False)
     ll2 = LinkedList(1,2,3,2,3)
     assert(checkPalindrome(ll2)==False)
+    ll1 = LinkedList(1,2,3,4,5)
+    ll2 = LinkedList(21,22,23,24,25)
+    assert(intersection(ll1, ll2) == 0)
+    joined = joinLinkedList(ll1, ll2, 4)
+    assert(joined.traverse() == [1,2,3,4,5,24,25])
+    assert(intersection(joined, ll2) == 4)
+    joined = joinLinkedList(ll2, ll1, 5)
+    assert(joined.traverse() == [21,22,23,24,25,5])
+    assert(intersection(joined, ll2) == 0)
+    assert(intersection(joined, ll1) == 5)
     
-testLinkedList()
+testLinkedList() 
