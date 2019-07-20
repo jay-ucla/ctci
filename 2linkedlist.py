@@ -40,6 +40,8 @@ class LinkedList:
             prev.next = curr.next
     
     def traverse(self):
+        if self.root is None:
+            return []
         curr = self.root
         traversal = [curr.item]
         while curr.next is not None:
@@ -107,10 +109,10 @@ def intersection(ll1, ll2):
 
 
 def testLinkedList():
-    ll = LinkedList(1)
-    
-    ll.traverse()
+    ll = LinkedList(1)  
+    assert(ll.traverse()==[1])
     ll.remove(1)
+    assert(ll.traverse()==[])
     ll.add(2)
     ll.add(3)
     assert(ll.traverse() == [2,3])
