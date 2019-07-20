@@ -27,6 +27,7 @@ class LinkedList:
             self.add(items[i])
         
     def remove(self, item):
+        assert(self.root is not None)
         curr = self.root
         prev = None
         while curr.item is not item:
@@ -51,6 +52,8 @@ class LinkedList:
         return traversal
     
     def reverse(self):
+        if self.root is None:
+            return
         curr = self.root
         self.root = None
         while curr is not None:
@@ -64,6 +67,8 @@ class LinkedList:
             curr = temp
                         
 def deleteDuplicateSet(ll):
+    if ll.root is None:
+        return
     data_set = {}
     curr = ll.root
     prev = None
@@ -78,6 +83,9 @@ def deleteDuplicateSet(ll):
             curr = curr.next
             
 def checkPalindrome(ll):
+    if ll.root is None:
+        return False
+    
     slow = ll.root
     fast = ll.root
     stack = []
@@ -99,6 +107,7 @@ def checkPalindrome(ll):
     return True
         
 def intersection(ll1, ll2):
+    assert(ll1.root is not None and ll2.root is not None)
     curr1 = ll1.root
     curr2 = ll2.root
     k=0
@@ -113,6 +122,11 @@ def testLinkedList():
     assert(ll.traverse()==[1])
     ll.remove(1)
     assert(ll.traverse()==[])
+    try:
+        ll.remove(1)
+        raise Exception("Error in remove")
+    except AssertionError:
+        pass
     ll.add(2)
     ll.add(3)
     assert(ll.traverse() == [2,3])
