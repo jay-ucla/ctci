@@ -46,7 +46,7 @@ class LinkedList:
             curr = curr.next
             traversal.append(curr.item)    
             #print(traversal)
-        print(traversal)
+        return traversal
     
     def reverse(self):
         curr = self.root
@@ -83,7 +83,7 @@ def checkPalindrome(ll):
         stack.append(slow.item)
         fast = fast.next.next
         slow = slow.next
-    print(stack)
+    #print(stack)
     
     #odd list
     if fast is not None:
@@ -108,39 +108,40 @@ def intersection(ll1, ll2):
 
 def testLinkedList():
     ll = LinkedList(1)
+    
     ll.traverse()
     ll.remove(1)
     ll.add(2)
     ll.add(3)
-    ll.traverse()
+    assert(ll.traverse() == [2,3])
     ll.remove(2)
-    ll.traverse()
+    assert(ll.traverse()==[3])
     ll.add(4)
     ll.add(1)
-    ll.traverse()
+    assert(ll.traverse()==[3,4,1])
     ll.remove(1)
     ll.remove(4)
-    ll.traverse()
+    assert(ll.traverse()==[3])
     ll.addAll(1,2,3,4,5,6,4,3,2,5,6)
-    ll.traverse()
+    assert(ll.traverse()==[3,1,2,3,4,5,6,4,3,2,5,6])
+    ll_list = ll.traverse()
+    ll_list.reverse()
     ll.reverse()
-    ll.traverse()
+    assert(ll.traverse()==ll_list)
+    ll.reverse()
+    ll_list.reverse()
+    assert(ll.traverse()==ll_list)
     deleteDuplicateSet(ll)
-    ll.traverse()
-    ll2 = LinkedList(1)
-    ll2.addAll(2,3,2,1)
-    print(checkPalindrome(ll2))
-    ll2 = LinkedList(1)
-    ll2.addAll(2,2,1)
-    print(checkPalindrome(ll2))
-    ll2 = LinkedList(1)
-    ll2.addAll(2,3,3,2,1)
-    print(checkPalindrome(ll2))
-    ll2 = LinkedList(1)
-    ll2.addAll(2,3,3,4,1)
-    print(checkPalindrome(ll2))
-    ll2 = LinkedList(1)
-    ll2.addAll(2,3,2,3)
-    print(checkPalindrome(ll2))
+    assert(ll.traverse()==[3,1,2,4,5,6])
+    ll2 = LinkedList(1,2,3,2,1)
+    assert(checkPalindrome(ll2)==True)
+    ll2 = LinkedList(1,2,2,1)
+    assert(checkPalindrome(ll2)==True)
+    ll2 = LinkedList(1,2,3,3,2,1)
+    assert(checkPalindrome(ll2)==True)
+    ll2 = LinkedList(1,2,3,3,4,1)
+    assert(checkPalindrome(ll2)==False)
+    ll2 = LinkedList(1,2,3,2,3)
+    assert(checkPalindrome(ll2)==False)
     
 testLinkedList()
