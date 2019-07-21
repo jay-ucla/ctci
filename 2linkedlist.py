@@ -65,6 +65,19 @@ class LinkedList:
             self.root = curr
             #Go to next node
             curr = temp
+            
+    def nodeAt(self, i):
+        if i < 1 or self.root is None:
+            return None
+        
+        nd = self.root
+        while nd.next is not None and i > 1:
+            nd = nd.next
+            i = i-1
+            
+        if i > 1:
+            return None
+        return nd
                         
 def deleteDuplicateSet(ll):
     if ll.root is None:
@@ -162,7 +175,29 @@ def joinLinkedList(ll1, ll2, k):
     end1.next = i_pt
     return joined
         
-
+def detectLoop(ll):
+    #Fast and slow pointer can detect loop
+    fast = ll.root
+    slow = ll.root
+    while fast is not None and fast.next is not None:
+        fast = fast.next.next
+        slow = slow.next 
+        if fast == slow:
+            break
+    
+    if fast is None or fast.next is None:
+        return None
+    
+    slow = ll.root
+    while fast is not None:
+        if fast == slow:
+            return fast
+        fast = fast.next
+        slow = slow.next 
+        
+    return None
+    
+    
 def testLinkedList():
     ll = LinkedList(1)  
     assert(ll.traverse()==[1])
@@ -215,5 +250,30 @@ def testLinkedList():
     assert(joined.traverse() == [21,22,23,24,25,5])
     assert(intersection(joined, ll2) == 0)
     assert(intersection(joined, ll1) == 5)
+    
+    assert(detectLoop(ll1) == None)
+    assert(detectLoop(LinkedList()) == None)
+    assert(detectLoop(LinkedList(1)) == None)
+    assert(detectLoop(LinkedList(1, 2)) == None)
+    lll = LinkedList(*ll1.traverse())
+    #1->2->3->4->5->1
+    lll.nodeAt(5).next = lll.root
+    assert(detectLoop(lll).item == 1)
+    
+    #1->2->3->4->5->2
+    lll.nodeAt(5).next = lll.nodeAt(2)
+    assert(detectLoop(lll).item == 2)
+    
+    #1->2->3->4->5->3
+    lll.nodeAt(5).next = lll.nodeAt(3)
+    assert(detectLoop(lll).item == 3)
+    
+    #1->2->3->4->5->4
+    lll.nodeAt(5).next = lll.nodeAt(4)
+    assert(detectLoop(lll).item == 4)
+    
+    #1->2->3->4->5->5
+    lll.nodeAt(5).next = lll.nodeAt(5)
+    assert(detectLoop(lll).item == 5)
     
 testLinkedList() 
